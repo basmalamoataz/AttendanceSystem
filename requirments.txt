@@ -1,12 +1,9 @@
-
 streamlit
 numpy
 Pillow==9.5.0
 opencv-python-headless
 face_recognition
-
 dlib
-ultralytics
-
-torch
-torchvision
+torch==2.1.0
+torchvision==0.16.0
+ultralytics==8.0.190
