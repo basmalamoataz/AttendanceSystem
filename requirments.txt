@@ -4,7 +4,8 @@ numpy
 Pillow==9.5.0
 opencv-python-headless
 face_recognition
-cmake
+
+cmake has been REMOVED from this file
 dlib
 ultralytics
 
