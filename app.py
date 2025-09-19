@@ -11,6 +11,16 @@ import base64
 import requests
 import zipfile
 
+# ===============================
+# Optional Import Handling
+# ===============================
+try:
+    import face_recognition
+    FACE_RECO_AVAILABLE = True
+except ImportError:
+    FACE_RECO_AVAILABLE = False
+    st.warning("⚠️ face_recognition not installed. The app will run in YOLO-only mode (faces = Unknown).")
+
 # --- Helper function to load and encode images ---
 def image_to_base64(img_path):  
     try:
@@ -80,11 +90,13 @@ def load_yolo_model():
 
 @st.cache_data
 def load_known_faces():
-    import face_recognition
-    KNOWN_FACES_DIR = "known_faces"
     known_faces_encodings = []
     known_faces_names = []
 
+    if not FACE_RECO_AVAILABLE:
+        return known_faces_encodings, known_faces_names
+
+    KNOWN_FACES_DIR = "known_faces"
     if not os.path.exists(KNOWN_FACES_DIR):
         st.error(f"Fatal Error: '{KNOWN_FACES_DIR}' not found.")
         st.stop()
@@ -153,7 +165,6 @@ def main():
 
     # --- Face Recognition ---
     def recognize_faces_in_frame(frame):
-        import face_recognition 
         attendees = []
         results = detector(frame, verbose=False)
         boxes = results[0].boxes.xyxy.cpu().numpy()
@@ -161,20 +172,22 @@ def main():
         for box in boxes:
             x1, y1, x2, y2 = [int(v) for v in box[:4]]
             face = frame[y1:y2, x1:x2]
-            if face.size == 0: continue
-
-            rgb_face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-            encodings = face_recognition.face_encodings(rgb_face)
+            if face.size == 0: 
+                continue
 
             name = "Unknown"
-            if encodings:
-                emb = encodings[0]
-                matches = face_recognition.compare_faces(known_faces, emb, tolerance=0.5)
-                face_distances = face_recognition.face_distance(known_faces, emb)
-                if True in matches:
-                    best_match_index = np.argmin(face_distances)
-                    if matches[best_match_index]:
-                        name = known_names[best_match_index]
+            if FACE_RECO_AVAILABLE and known_faces:
+                rgb_face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
+                encodings = face_recognition.face_encodings(rgb_face)
+
+                if encodings:
+                    emb = encodings[0]
+                    matches = face_recognition.compare_faces(known_faces, emb, tolerance=0.5)
+                    face_distances = face_recognition.face_distance(known_faces, emb)
+                    if True in matches:
+                        best_match_index = np.argmin(face_distances)
+                        if matches[best_match_index]:
+                            name = known_names[best_match_index]
             
             attendees.append(name)
             color = (0, 255, 0) if name != "Unknown" else (0, 0, 255)
