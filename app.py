@@ -12,6 +12,11 @@ import requests
 import zipfile
 
 # ===============================
+# Set Streamlit Page Config (FIRST!)
+# ===============================
+st.set_page_config(page_title="Attendance System", layout="wide")
+
+# ===============================
 # Optional Import Handling
 # ===============================
 try:
@@ -20,6 +25,7 @@ try:
 except ImportError:
     FACE_RECO_AVAILABLE = False
     st.warning("⚠️ face_recognition not installed. The app will run in YOLO-only mode (faces = Unknown).")
+
 
 # --- Helper function to load and encode images ---
 def image_to_base64(img_path):  
@@ -127,7 +133,7 @@ def load_known_faces():
 # ===============================
 
 def main():
-    st.set_page_config(page_title="Attendance System", layout="wide")
+    
 
     # ✅ Make sure data is ready
     download_and_extract_known_faces()
