@@ -28,16 +28,33 @@ def image_to_base64(img_path):
 @st.cache_resource
 def load_yolo_model():
     """Loads the YOLO model and caches it."""
-    # We import YOLO here, inside the function, to avoid startup conflicts.
     from ultralytics import YOLO
+    import requests
 
-    model_path = "models/best (1).pt"
-    if os.path.exists(model_path):
-        model = YOLO(model_path)
-        return model
-    else:
-        st.error(f"Fatal Error: YOLO model not found at path: {model_path}")
-        st.stop() # Stop the app if the model is not found
+    model_path = "models/best.pt"
+
+    # ✅ Check if model exists, otherwise download it
+    if not os.path.exists(model_path):
+        st.warning("⚠️ YOLO model not found locally. Downloading...")
+        os.makedirs("models", exist_ok=True)
+
+        # ⚠️ Your Google Drive file ID
+        file_id = "1JFaIXJ8IAJRLpZ3tS0RFjnsDNP39LFkX"
+        download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+
+        # Download file from Drive
+        response = requests.get(download_url)
+        if response.status_code == 200:
+            with open(model_path, "wb") as f:
+                f.write(response.content)
+        else:
+            st.error("❌ Failed to download YOLO model from Google Drive")
+            st.stop()
+
+    # ✅ Load the YOLO model
+    model = YOLO(model_path)
+    return model
+
 
 # Use st.cache_data to load and process known faces only once
 @st.cache_data
