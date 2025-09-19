@@ -1,5 +1,5 @@
 streamlit==1.36.0
-numpy==1.26.4
+numpy==1.26.4 --only-binary=:all:
 Pillow==10.2.0
 opencv-python-headless==4.8.1.78
 dlib-bin==19.24.2
