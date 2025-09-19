@@ -3,7 +3,7 @@ numpy
 Pillow>=10.0.0
 opencv-python-headless
 face_recognition
-dlib
+dlib-bin
 torch
 torchvision
 ultralytics
