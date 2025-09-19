@@ -1,11 +1,6 @@
 streamlit==1.36.0
-numpy>=2.0.0
-pandas
-opencv-python
-Pillow
-torch
-torchvision
+opencv-python-headless
 ultralytics
-face-recognition
-dlib
-
+deepface
+numpy
+Pillow
