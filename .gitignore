@@ -1,0 +1,49 @@
+# Python cache/compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environment folders
+env/
+venv/
+.venv/
+attendance_env/
+*.conda
+*.egg-info/
+
+# Conda environment
+*.yml
+
+# VS Code settings
+.vscode/
+
+# Streamlit cache
+.streamlit/
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Model files / weights
+*.pt
+*.pth
+*.h5
+*.onnx
+
+# Dataset folders (large files you don’t want in git)
+data/
+datasets/
+known_faces/
+
+# Temporary files
+*.tmp
+*.swp
+*.bak

@@ -1,0 +1,13 @@
+This file tells Streamlit Cloud which Python libraries to install.
+streamlit
+numpy
+Pillow==9.5.0
+opencv-python-headless
+face_recognition
+cmake
+dlib
+ultralytics
+
+The following are automatically installed by ultralytics, but specifying them helps stability.
+torch
+torchvision

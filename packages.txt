@@ -1,0 +1,4 @@
+This file tells Streamlit's Linux servers to install C++ build tools.
+This is REQUIRED for the face_recognition library to install correctly.
+build-essential
+cmake
