@@ -218,7 +218,7 @@ def main():
 
             cap.release()
             if confirmed_attendees:
-                st.success(f"✅ Final Attendees: {', '.join(sorted(confirmed_attendees)))}")
+                st.success(f"✅ Final Attendees: {', '.join(sorted(confirmed_attendees))}")
             else:
                 st.warning("⏹️ No known attendees identified.")
 
