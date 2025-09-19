@@ -212,7 +212,7 @@ def main():
                         confirmed_attendees.add(name)
                 stframe.image(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
                 if confirmed_attendees:
-                    status_text.success(f"Confirmed: {', '.join(sorted(confirmed_attendees)))}")
+                    status_text.success(f"Confirmed: {', '.join(sorted(confirmed_attendees))}")
                 else:
                     status_text.info("Processing...")
 
