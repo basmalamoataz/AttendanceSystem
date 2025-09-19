@@ -1,6 +1,7 @@
-streamlit==1.36.0
+streamlit
 opencv-python-headless
 ultralytics
-deepface
+pillow
 numpy
-Pillow
+requests
+face-recognition
