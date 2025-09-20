@@ -147,7 +147,6 @@ Streamlit Link : https://2883a9955b9b.ngrok-free.app/
 
 ## 📊 Example Results
 
-![WhatsApp Image 2025-09-20 at 5 23 00 PM](https://github.com/user-attachments/assets/cb0c28db-db83-45d1-97c9-eb608f5287f9)
 ![WhatsApp Image 2025-09-20 at 5 08 09 PM](https://github.com/user-attachments/assets/dc5d29de-b60e-499a-b77d-26a8b0786d1c)
 ![WhatsApp Image 2025-09-20 at 4 35 35 PM](https://github.com/user-attachments/assets/a1f3bb34-f4da-4544-86be-5f0c5d62aa7b)
 
