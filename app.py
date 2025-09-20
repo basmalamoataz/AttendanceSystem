@@ -2,17 +2,33 @@
 # Libraries we need
 # ===============================
 import streamlit as st
-import cv2
-import numpy as np
-from PIL import Image
-import tempfile
-import os
-import base64
+import cv2 # OpenCV for image processing
+import numpy as np 
+from PIL import Image # For image handling
+import tempfile # To create temporary files
+import os # For file path operations
+import base64 # For encoding images to base64
+import csv # For handling CSV files
+from datetime import datetime # For timestamping attendance
+
+def mark_attendance(name, file_path="attendance.csv"):
+    """Save attendance with timestamp in a CSV file."""
+    if name == "Unknown":  # Don't log unknown faces
+        return
+    
+    now = datetime.now()
+    dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
+
+    # Open the file in append mode and write the entry
+    with open(file_path, "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([name, dt_string])
+
 
 # --- Helper function to load and encode images ---
 def image_to_base64(img_path):  
     try:
-        with open(img_path, "rb") as f:
+        with open(img_path, "rb") as f: # "rb" means read binary which is needed for images
             return base64.b64encode(f.read()).decode()  
         """I used base64 because
           Streamlit and HTML often embed images in base64 when they can’t load from file paths directly."""
@@ -31,7 +47,7 @@ def load_yolo_model():
     # We import YOLO here, inside the function, to avoid startup conflicts.
     from ultralytics import YOLO
 
-    model_path = "models/best (1).pt"
+    model_path = "models\\best (1).pt"
     if os.path.exists(model_path):
         model = YOLO(model_path)
         return model
@@ -159,6 +175,8 @@ def main():
             processed_frame, attendees = recognize_faces_in_frame(frame_bgr) # Process the image
             st.image(cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB), caption="Processed Image") # Convert back to RGB for displaying in Streamlit
             st.success(f"✅ Attendees detected: {', '.join(attendees)}")
+            for person in attendees:
+                mark_attendance(person)
 
     # --- Handle Video Upload ---
     elif option == "Video":
@@ -208,20 +226,24 @@ def main():
         # Display the final results
         if confirmed_attendees:
             st.success(f"✅ Final Attendees Detected: {', '.join(sorted(list(confirmed_attendees)))}")
+            for person in confirmed_attendees:
+                mark_attendance(person)
         else:
             st.warning("⏹️ Processing complete. No known attendees were identified in the video.")
 
     # --- Handle Webcam ---
     elif option == "Webcam":
         st.info("Allow camera access and click 'Take a photo' to capture an image.")
-        camera = st.camera_input("Take a photo")
+        camera = st.camera_input("Take a photo") # This opens the webcam and allows the user to take a photo
         if camera:
-            img = Image.open(camera).convert('RGB')
-            img_array = np.array(img)
-            frame_bgr = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
-            processed_frame, attendees = recognize_faces_in_frame(frame_bgr)
-            st.image(cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB), caption="Processed Webcam Frame")
+            img = Image.open(camera).convert('RGB') # Convert to RGB because OpenCV uses BGR by default
+            img_array = np.array(img) # Convert the PIL image to a NumPy array
+            frame_bgr = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR) # Convert RGB to BGR for OpenCV
+            processed_frame, attendees = recognize_faces_in_frame(frame_bgr) # Process the captured image
+            st.image(cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB), caption="Processed Webcam Frame") # Convert back to RGB for displaying in Streamlit
             st.success(f"✅ Attendees detected: {', '.join(attendees)}")
+            for person in attendees:
+                mark_attendance(person)
 
 
 if __name__ == '__main__':
