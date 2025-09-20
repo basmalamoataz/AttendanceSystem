@@ -1,4 +1,4 @@
-# 📝 Siamese Attendance System
+# 📝 Attendance System with Computer Vision
 
 ## 📌 Project Overview
 
