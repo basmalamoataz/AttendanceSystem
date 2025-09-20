@@ -40,11 +40,11 @@ def image_to_base64(img_path):
 # YOLO and "known_faces" Loading Functions
 # ===============================
 
-# Use st.cache_resource to load the YOLO model only once
-@st.cache_resource
+# Use st.cache_resource: tells your Streamlit app to run a function once and then save the result in memory forever
+@st.cache_resource  
 def load_yolo_model():
     """Loads the YOLO model and caches it."""
-    # We import YOLO here, inside the function, to avoid startup conflicts.
+    # We import YOLO here,
     from ultralytics import YOLO
 
     model_path = "models\\best (1).pt"
@@ -197,8 +197,8 @@ def main():
         status_text.info("Processing video, please wait...")
 
         while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
+            ret, frame = cap.read() #ret is a boolean indicating if the frame was read successfully 
+            if not ret:         
                 break
 
             # Recognize faces in the current frame
